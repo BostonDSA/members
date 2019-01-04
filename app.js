@@ -55,14 +55,19 @@ app.use((req, res, next) => {
   }
 });
 
-app.get('/', checkJwt, (req, res) => {
+app.get('/', (req, res) => { res.redirect('/home'); });
+
+app.get('/home', checkJwt, (req, res) => {
   res.render('index', {
     email: req.user.email,
     user: JSON.stringify(req.user, null, 2),
   });
 });
 
-app.get('/logout', (req, res) => { res.redirect(`${AUTH_HOST}/logout`);});
+app.get('/logout', (req, res) => {
+  var redir = encodeURIComponent(`${HOST}/home`);
+  res.redirect(`${AUTH_HOST}/logout?r=${redir}`);
+});
 
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
