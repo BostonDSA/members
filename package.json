@@ -12,5 +12,8 @@
   },
   "devDependencies": {
     "aws-sdk": "^2.382.0"
+  },
+  "scripts": {
+    "build": "docker-compose run build && docker-compose down"
   }
 }
