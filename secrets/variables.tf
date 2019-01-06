@@ -1,5 +1,6 @@
 variable auth_host {
   description = "Auth service host."
+  default     = "https://auth.dsausa.org"
 }
 
 variable auth0_audience {
@@ -8,6 +9,7 @@ variable auth0_audience {
 
 variable auth0_domain {
   description = "Auth0 domain."
+  default     = "dsausa.auth0.com"
 }
 
 variable auth0_session_secret {
@@ -26,7 +28,7 @@ variable aws_profile {
 
 variable aws_region {
   description = "AWS region."
-  default     = "us-east-2"
+  default     = "us-east-1"
 }
 
 variable aws_secret_access_key {
@@ -35,7 +37,17 @@ variable aws_secret_access_key {
 }
 
 variable host {
-  description = "Auth service host."
+  description = "Service host."
+  default     = "https://members.bostondsa.org"
+}
+
+variable release {
+  description = "Release tag."
+}
+
+variable repo {
+  description = "Project repository."
+  default     = "https://github.com/BostonDSA/members"
 }
 
 variable secret_description {

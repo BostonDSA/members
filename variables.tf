@@ -15,7 +15,7 @@ variable aws_profile {
 
 variable aws_region {
   description = "AWS region."
-  default     = ""
+  default     = "us-east-1"
 }
 
 variable aws_secret_access_key {
@@ -33,6 +33,15 @@ variable lambda_function_name {
   default     = "members"
 }
 
+variable release {
+  description = "Release tag."
+}
+
+variable repo {
+  description = "Project repository."
+  default     = "https://github.com/BostonDSA/members"
+}
+
 variable role_name {
   description = "IAM role name."
   default     = "members"
@@ -40,4 +49,5 @@ variable role_name {
 
 variable secret_name {
   description = "SecretsManager secret name."
+  default     = "members"
 }

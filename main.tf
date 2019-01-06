@@ -16,8 +16,8 @@ locals {
 
   tags {
     App     = "members"
-    Repo    = ""
-    Release = "2019.1.6"
+    Repo    = "${var.repo}"
+    Release = "${var.release}"
   }
 }
 
