@@ -14,11 +14,18 @@ locals {
     AUTH_HOST            = "${var.auth_host}"
     HOST                 = "${var.host}"
   }
+
+  tags {
+    App     = "members"
+    Repo    = "${var.repo}"
+    Release = "${var.release}"
+  }
 }
 
 resource aws_secretsmanager_secret secret {
   description = "${var.secret_description}"
   name        = "${var.secret_name}"
+  tags        = "${local.tags}"
 }
 
 resource aws_secretsmanager_secret_version version {
