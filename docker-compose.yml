@@ -3,10 +3,10 @@ services:
   build:
     command: >-
       sh -c "
-        rm -rf build &&
-        mkdir build &&
-        npm install --production &&
-        cp -r node_modules app.js lambda.js package.json package-lock.json views build/
+        mkdir -p build &&
+        cp -r app.js lambda.js package.json package-lock.json views build/ &&
+        cd build &&
+        npm install --production
       "
     image: lambci/lambda:build-nodejs8.10
     volumes:

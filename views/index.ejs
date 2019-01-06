@@ -19,6 +19,7 @@
 
     <!-- Styles -->
     <style>
+      a          { color: #b71c1c; }
       body       { margin-top: 5%; }
       pre        { word-wrap: break-word; white-space: pre-line; }
       .container { max-width: 840px; }
@@ -34,29 +35,30 @@
 
     <!-- Cards -->
     <style>
-      .skill-card {
+      .card {
         padding: 20px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
         cursor: pointer;
         background-color: #fafafa;
+        margin-top: 10px;
       }
-      .skill-card:hover {
+      .card:hover {
         box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
       }
-      .skill-card:hover .skill-card__header {
+      .card:hover .card__header {
         height: 40px;
       }
-      .skill-card:hover .skill-card__body {
+      .card:hover .card__body {
         height: 96px;
       }
-      .skill-card .skill-card__header {
+      .card .card__header {
         position: relative;
         height: 96px;
         margin: -20px -20px 20px -20px;
         transition: height 0.5s;
         overflow: hidden;
       }
-      .skill-card .skill-card__header .skill-card__icon {
+      .card .card__header .card__icon {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -69,17 +71,17 @@
         transition: transform 0.5s;
         transition: transform 0.5s, -webkit-transform 0.5s;
       }
-      .skill-card .skill-card__body {
+      .card .card__body {
         height: 40px;
         transition: height 0.5s;
         overflow: hidden;
       }
-      .skill-card .skill-card__body .skill-card__title {
+      .card .card__body .card__title {
         font-size: 1.4em;
         font-weight: 600;
         text-transform: uppercase;
       }
-      .skill-card .skill-card__body .skill-card__subtitle {
+      .card .card__body .card__subtitle {
         color: #9E9E9E;
         font-style: italic;
       }
@@ -88,6 +90,7 @@
 
   <body>
     <div class="container">
+
       <div class="row">
         <a class="header" href="/">
           <div class="one column">
@@ -98,44 +101,43 @@
           </div>
         </a>
       </div>
+
       <div class="row">
         Welcome, <a href="mailto:<%= email %>"><%= email %></a>
-        <a href="/logout" class="u-pull-right">Logout</a>
+        <a href="/logout" class="u-pull-right button">Logout</a>
       </div>
-      <br/>
-
 
       <div class="row">
         <div class="four columns">
-          <div onClick="window.open('https://bostondsa.org/');" class="skill-card">
-          <header class="skill-card__header" style="background: #ff0000;">
-            <img class="skill-card__icon" src="https://pbs.twimg.com/profile_images/891003621822910464/Pdp_UUB__400x400.jpg" alt="Slack Logo"/>
+          <div onClick="window.open('https://bostondsa.org/');" class="card">
+            <header class="card__header" style="background: #ff0000;">
+              <img class="card__icon" src="https://pbs.twimg.com/profile_images/891003621822910464/Pdp_UUB__400x400.jpg" alt="Slack Logo"/>
+            </header>
+            <section class="card__body">
+              <h2 class="card__title">Website</h2>
+              <span class="card__subtitle">bostondsa.org</span>
+            </section>
+          </div>
+        </div>
+        <div class="four columns">
+          <div onClick="window.open('https://wiki.bostondsa.org/');" class="card">
+          <header class="card__header" style="background: #fff;">
+            <img class="card__icon" src="https://wiki.bostondsa.org/w/resources/assets/rose.jpg" alt="Wiki Logo"/>
           </header>
-          <section class="skill-card__body">
-            <h2 class="skill-card__title">Website</h2>
-            <span class="skill-card__subtitle">bostondsa.org</span>
+          <section class="card__body">
+            <h2 class="card__title">Wiki</h2>
+            <span class="card__subtitle">Chapter knowledge base</span>
           </section>
         </div>
         </div>
         <div class="four columns">
-          <div onClick="window.open('https://wiki.bostondsa.org/');" class="skill-card">
-          <header class="skill-card__header" style="background: #fff;">
-            <img class="skill-card__icon" src="https://wiki.bostondsa.org/w/resources/assets/rose.jpg" alt="Wiki Logo"/>
+          <div onClick="window.open('https://bostondsa.slack.com/');" class="card">
+          <header class="card__header" style="background: #bffec7;">
+            <img class="card__icon" src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg" alt="HTML5 Logo"/>
           </header>
-          <section class="skill-card__body">
-            <h2 class="skill-card__title">Wiki</h2>
-            <span class="skill-card__subtitle">Chapter knowledge base</span>
-          </section>
-        </div>
-        </div>
-        <div class="four columns">
-          <div onClick="window.open('https://bostondsa.slack.com/');" class="skill-card">
-          <header class="skill-card__header" style="background: #bffec7;">
-            <img class="skill-card__icon" src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg" alt="HTML5 Logo"/>
-          </header>
-          <section class="skill-card__body">
-            <h2 class="skill-card__title">Slack</h2>
-            <span class="skill-card__subtitle">Join the conversation</span>
+          <section class="card__body">
+            <h2 class="card__title">Slack</h2>
+            <span class="card__subtitle">Join the conversation</span>
           </section>
         </div>
         </div>
