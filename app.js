@@ -65,12 +65,14 @@ app.get('/home', checkJwt, (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
+  req.session.destroy();
   var redir = encodeURIComponent(`${HOST}/home`);
   res.redirect(`${AUTH_HOST}/logout?r=${redir}`);
 });
 
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
+    console.error(err);
     var redir = url.parse(req.originalUrl, true);
     redir.scheme = redir.scheme || 'https';
     redir.host = redir.host || HOST;

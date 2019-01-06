@@ -13,6 +13,12 @@ provider aws {
 locals {
   domain_name = "members.bostondsa.org"
   stage_name  = "prod"
+
+  tags {
+    App     = "members"
+    Repo    = ""
+    Release = "2019.1.6"
+  }
 }
 
 data archive_file package {
@@ -148,6 +154,7 @@ resource aws_lambda_function lambda {
   role             = "${aws_iam_role.role.arn}"
   runtime          = "nodejs8.10"
   source_code_hash = "${data.archive_file.package.output_base64sha256}"
+  tags             = "${local.tags}"
   timeout          = 29
 
   environment {
