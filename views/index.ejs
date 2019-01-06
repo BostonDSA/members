@@ -42,13 +42,13 @@
         background-color: #fafafa;
         margin-top: 10px;
       }
-      .card:hover {
+      .card:hover, .card:active {
         box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
       }
-      .card:hover .card__header {
+      .card:hover .card__header, .card:active .card__header {
         height: 40px;
       }
-      .card:hover .card__body {
+      .card:hover .card__body, .card:active .card__body {
         height: 96px;
       }
       .card .card__header {
@@ -109,35 +109,35 @@
 
       <div class="row">
         <div class="four columns">
-          <div onClick="window.open('https://bostondsa.org/');" class="card">
+          <div class="card">
             <header class="card__header" style="background: #ff0000;">
               <img class="card__icon" src="https://pbs.twimg.com/profile_images/891003621822910464/Pdp_UUB__400x400.jpg" alt="Slack Logo"/>
             </header>
             <section class="card__body">
               <h2 class="card__title">Website</h2>
-              <span class="card__subtitle">bostondsa.org</span>
+              <span class="card__subtitle" onClick="window.open('https://bostondsa.org/');">bostondsa.org</span>
             </section>
           </div>
         </div>
         <div class="four columns">
-          <div onClick="window.open('https://wiki.bostondsa.org/');" class="card">
+          <div class="card">
             <header class="card__header" style="background: #fff;">
               <img class="card__icon" src="https://wiki.bostondsa.org/w/resources/assets/rose.jpg" alt="Wiki Logo"/>
             </header>
             <section class="card__body">
               <h2 class="card__title">Wiki</h2>
-              <span class="card__subtitle">Chapter knowledge base</span>
+              <span class="card__subtitle" onClick="window.open('https://wiki.bostondsa.org/');">Chapter knowledge base</span>
             </section>
           </div>
         </div>
         <div class="four columns">
-          <div onClick="window.open('https://calendars.dsausa.org/u21m8kt8bb1lflp8jpmd317iik%40group.calendar.google.com');" class="card">
+          <div class="card">
             <header class="card__header" style="background: #821D1D;">
               <img class="card__icon" src="https://upload.wikimedia.org/wikipedia/commons/5/56/Apple_Calendar_Icon.png" alt="Google Calendar Logo"/>
             </header>
             <section class="card__body">
               <h2 class="card__title">Calendar</h2>
-              <span class="card__subtitle">Subscribe to Chapter Calendar</span>
+              <span class="card__subtitle" onClick="window.open('https://calendars.dsausa.org/u21m8kt8bb1lflp8jpmd317iik%40group.calendar.google.com');">Subscribe to Chapter Calendar</span>
             </section>
           </div>
         </div>
@@ -145,40 +145,41 @@
 
       <div class="row">
         <div class="four columns">
-          <div onClick="window.open('https://bostondsa.slack.com/');" class="card">
+          <div class="card">
             <header class="card__header" style="background: #FF4F4F;">
               <img class="card__icon" src="https://upload.wikimedia.org/wikipedia/commons/7/76/Slack_Icon.png" alt="Slack Logo"/>
             </header>
             <section class="card__body">
               <h2 class="card__title">Slack</h2>
-              <span class="card__subtitle">Join the conversation</span>
+              <span class="card__subtitle" onClick="window.open('https://bostondsa.slack.com/');">Join the conversation</span>
             </section>
           </div>
         </div>
         <div class="four columns">
-          <div onClick="window.open('https://twitter.com/Boston_DSA');" class="card">
+          <div class="card">
             <header class="card__header" style="background: #775B7B;">
               <img class="card__icon" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/295px-Twitter_bird_logo_2012.svg.png" alt="Twitter Logo" style="height: 96; width: 96;"/>
             </header>
             <section class="card__body">
               <h2 class="card__title">Twitter</h2>
-              <span class="card__subtitle">Follow us on Twitter</span>
+              <span class="card__subtitle" onClick="window.open('https://twitter.com/Boston_DSA');">Follow us on Twitter</span>
             </section>
           </div>
         </div>
         <div class="four columns">
-          <div onClick="window.open('https://bostonpewg.org/');" class="card">
+          <div class="card">
             <header class="card__header" style="background: #F8B195;">
               <img class="card__icon" src="https://i2.wp.com/bostonpewg.org/wp-content/uploads/2018/03/cropped-pewglogo1.png" alt="Blog Logo" style="height: 91px;"/>
             </header>
             <section class="card__body">
               <h2 class="card__title">Blog</h2>
-              <span class="card__subtitle">Political Education Blog</span>
+              <span class="card__subtitle" onClick="window.open('https://bostonpewg.org/');">Political Education Blog</span>
             </section>
           </div>
         </div>
       </div>
 
+      <br/>
     </div>
   </body>
 </html>
