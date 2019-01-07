@@ -59,3 +59,11 @@ variable secret_name {
   description = "SecretsManager secret name."
   default     = "members"
 }
+
+variable slack_token {
+  description = "Slack bot token."
+}
+
+variable slack_url {
+  description = "Slack URL."
+}
