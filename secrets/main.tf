@@ -13,6 +13,8 @@ locals {
     AUTH0_SESSION_SECRET = "${var.auth0_session_secret}"
     AUTH_HOST            = "${var.auth_host}"
     HOST                 = "${var.host}"
+    SLACK_TOKEN          = "${var.slack_token}"
+    SLACK_URL            = "${var.slack_url}"
   }
 
   tags {

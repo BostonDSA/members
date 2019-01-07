@@ -1,19 +1,23 @@
 'use strict';
-const dotenv = require('dotenv');
+const AWS = require('aws-sdk');
+const bodyParser = require('body-parser');
 const express = require('express');
 const expressJwt = require('express-jwt');
 const expressSession = require('express-session');
 const jwksRsa = require('jwks-rsa');
-const request = require('request-promise');
 const url = require('url');
+const { WebClient } = require('@slack/client');
 
-dotenv.config();
+const slack = new WebClient(process.env.SLACK_TOKEN);
+
+const SNS = new AWS.SNS();
 
 const AUTH_HOST = process.env.AUTH_HOST;
 const AUTH0_AUDIENCE = process.env.AUTH0_AUDIENCE;
 const AUTH0_DOMAIN = process.env.AUTH0_DOMAIN;
 const AUTH0_SESSION_SECRET = process.env.AUTH0_SESSION_SECRET;
 const HOST = process.env.HOST;
+const SLACK_URL = process.env.SLACK_URL;
 
 const CARDS = {
   website: {
@@ -107,12 +111,36 @@ app.use((req, res, next) => {
     next();
   }
 });
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => { res.redirect('/home'); });
 
 app.get('/home', checkJwt, (req, res) => {
   res.render('index', {email: req.user.email, rows: ROWS});
 });
+
+app.get('/home/slack', checkJwt, (req, res) => {
+  slack.users.lookupByEmail({email: req.user.email}).then(() => {
+    res.redirect(SLACK_URL);
+  }).catch((err) => {
+    res.redirect('/home/slack/join');
+  });
+});
+
+app.get('/home/slack/join', checkJwt, (req, res) => {
+  res.render('slack', {email: req.user.email, alert: undefined});
+});
+
+app.post('/home/slack/join', checkJwt, (req, res) => {
+  res.render('slack', {
+    email: req.user.email,
+    alert: {
+      text: 'Sorry, requests to join Slack are not being accepted at this time',
+      cls: 'error',
+    },
+  });
+})
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
