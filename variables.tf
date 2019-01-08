@@ -39,7 +39,7 @@ variable release {
 
 variable repo {
   description = "Project repository."
-  default     = "https://github.com/BostonDSA/members"
+  default     = "https://github.com/BostonDSA/members.git"
 }
 
 variable role_name {
