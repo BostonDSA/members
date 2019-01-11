@@ -67,3 +67,7 @@ variable slack_token {
 variable slack_url {
   description = "Slack URL."
 }
+
+variable slack_invite_channel {
+  description = "Slack invitation channel ID."
+}
