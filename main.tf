@@ -55,6 +55,10 @@ data aws_secretsmanager_secret secret {
   name = "${var.secret_name}"
 }
 
+data aws_sns_topic post_messages {
+  name = "slack_socialismbot_post_message"
+}
+
 resource aws_api_gateway_domain_name domain {
   domain_name     = "${local.domain_name}"
   certificate_arn = "${data.aws_acm_certificate.cert.arn}"
@@ -159,8 +163,9 @@ resource aws_lambda_function lambda {
 
   environment {
     variables {
-      AWS_SECRET = "${data.aws_secretsmanager_secret.secret.name}"
-      HOST       = "https://${local.domain_name}"
+      AWS_SECRET              = "${data.aws_secretsmanager_secret.secret.name}"
+      HOST                    = "https://${local.domain_name}"
+      SLACK_MESSAGE_TOPIC_ARN = "${data.aws_sns_topic.post_messages.arn}"
     }
   }
 }
