@@ -15,6 +15,7 @@ locals {
     HOST                 = "${var.host}"
     SLACK_TOKEN          = "${var.slack_token}"
     SLACK_URL            = "${var.slack_url}"
+    SLACK_INVITE_CHANNEL = "${var.slack_invite_channel}"
   }
 
   tags {
