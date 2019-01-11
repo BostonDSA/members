@@ -18,6 +18,8 @@ const AUTH0_DOMAIN = process.env.AUTH0_DOMAIN;
 const AUTH0_SESSION_SECRET = process.env.AUTH0_SESSION_SECRET;
 const HOST = process.env.HOST;
 const SLACK_URL = process.env.SLACK_URL;
+const SLACK_INVITE_CHANNEL = process.env.SLACK_INVITE_CHANNEL;
+const SLACK_MESSAGE_TOPIC_ARN = process.env.SLACK_MESSAGE_TOPIC_ARN;
 
 const CARDS = {
   website: {
@@ -133,12 +135,78 @@ app.get('/home/slack/join', checkJwt, (req, res) => {
 });
 
 app.post('/home/slack/join', checkJwt, (req, res) => {
-  res.render('slack', {
-    email: req.user.email,
-    alert: {
-      text: 'Sorry, requests to join Slack are not being accepted at this time',
-      cls: 'error',
-    },
+  SNS.publish({
+    TopicArn: SLACK_MESSAGE_TOPIC_ARN,
+    Message: JSON.stringify({
+      channel: SLACK_INVITE_CHANNEL,
+      text: 'A new DSA member is requesting to join Slack',
+      attachments: [
+        {
+          color: 'b71c1c',
+          fallback: 'A new DSA member is requesting to join Slack',
+          fields: [
+            {
+              title: 'Name',
+              value: req.body.name,
+              short: true,
+            },
+            {
+              title: 'Email',
+              value: req.user.email,
+              short: true,
+            }
+          ],
+          footer: '<https://github.com/BostonDSA/socialismbot|BostonDSA/socialismbot>',
+          footer_icon: 'https://assets-cdn.github.com/favicon.ico',
+        },
+        {
+          color: 'b71c1c',
+          callback_id: 'invite',
+          fallback: 'A new DSA member is requesting to join Slack',
+          actions: [
+            {
+              confirm: {
+                title: 'Are you sure?',
+                text: `${req.body.name} *will* be invited to Slack`,
+                ok_text: 'Yes',
+              },
+              name: 'invite',
+              text: 'Invite',
+              type: 'button',
+              value: req.user.email,
+            },
+            {
+              confirm: {
+                title: 'Are you sure?',
+                text: `${req.body.name} *will not* be invited to Slack`,
+                ok_text: 'Yes',
+              },
+              name: 'dismiss',
+              style: 'danger',
+              text: 'Dismiss',
+              type: 'button',
+            }
+          ],
+          text: 'Invite or dismiss?',
+        }
+      ],
+    }),
+  }).promise().then(() => {
+    res.render('slack', {
+      email: req.user.email,
+      alert: {
+        text: 'Thanks! Your request is being reviewed by the Slack moderators',
+        cls: 'good',
+      },
+    });
+  }).catch((err) => {
+    res.render('slack', {
+      email: req.user.email,
+      alert: {
+        text: 'Oops, something went wrong. Email tech@bostondsa.org to report the problem.',
+        cls: 'error',
+      },
+    });
   });
 })
 
