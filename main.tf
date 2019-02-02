@@ -49,6 +49,12 @@ data aws_iam_policy_document inline {
     actions   = ["secretsmanager:GetSecretValue"]
     resources = ["${data.aws_secretsmanager_secret.secret.arn}"]
   }
+
+  statement {
+    sid       = "PublishToSns"
+    actions   = ["sns:Publish"]
+    resources = ["${data.aws_sns_topic.post_messages.arn}"]
+  }
 }
 
 data aws_secretsmanager_secret secret {

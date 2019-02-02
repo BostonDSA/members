@@ -200,6 +200,7 @@ app.post('/home/slack/join', checkJwt, (req, res) => {
       },
     });
   }).catch((err) => {
+    console.error(JSON.stringify(err));
     res.render('slack', {
       email: req.user.email,
       alert: {
