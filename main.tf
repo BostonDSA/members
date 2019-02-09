@@ -141,6 +141,7 @@ resource aws_api_gateway_rest_api api {
 resource aws_cloudwatch_log_group logs {
   name              = "/aws/lambda/${aws_lambda_function.lambda.function_name}"
   retention_in_days = 30
+  tags              = "${local.tags}"
 }
 
 resource aws_iam_role role {
