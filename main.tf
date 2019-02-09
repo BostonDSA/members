@@ -7,7 +7,7 @@ provider aws {
   secret_key = "${var.aws_secret_access_key}"
   profile    = "${var.aws_profile}"
   region     = "${var.aws_region}"
-  version    = "~> 1.54"
+  version    = "~> 1.58"
 }
 
 locals {
@@ -30,6 +30,10 @@ data archive_file package {
 data aws_acm_certificate cert {
   domain   = "${var.acm_certificate_domain}"
   statuses = ["ISSUED"]
+}
+
+data aws_iam_policy basic {
+  arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 data aws_iam_policy_document assume_role {
@@ -151,7 +155,7 @@ resource aws_iam_role_policy inline {
 }
 
 resource aws_iam_role_policy_attachment basic {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn = "${data.aws_iam_policy.basic.arn}"
   role       = "${aws_iam_role.role.name}"
 }
 
@@ -160,7 +164,7 @@ resource aws_lambda_function lambda {
   filename         = "${data.archive_file.package.output_path}"
   function_name    = "${var.lambda_function_name}"
   handler          = "lambda.handler"
-  memory_size      = 1024
+  memory_size      = 2048
   role             = "${aws_iam_role.role.arn}"
   runtime          = "nodejs8.10"
   source_code_hash = "${data.archive_file.package.output_base64sha256}"
