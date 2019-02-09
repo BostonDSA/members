@@ -13,7 +13,7 @@
     "request-promise": "^4.2.2"
   },
   "devDependencies": {
-    "aws-sdk": "^2.382.0"
+    "aws-sdk": "^2.400.0"
   },
   "private": true,
   "scripts": {
