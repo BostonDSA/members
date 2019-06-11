@@ -1,16 +1,15 @@
 language: node_js
-services:
-  - docker
-before_install:
-  - export TF_VAR_release="${TRAVIS_TAG:-$(date +%Y.%-m.%-d)}"
-  - export TF_VAR_repo="$(git config --get remote.origin.url)"
-  - docker-compose run terraform init
+node_js:
+- "8.10"
 install:
-  - docker-compose run build
-jobs:
-  include:
-    - stage: test
-      script: docker-compose run terraform plan
-    - stage: deploy
-      script: docker-compose run terraform apply -auto-approve
-      if: tag IS present
+- docker pull lambci/lambda:build-nodejs8.10
+- docker pull lambci/lambda:nodejs8.10
+script:
+- make
+deploy:
+- provider: script
+  script: make apply
+  skip_cleanup: true
+  on:
+    repo: BostonDSA/members
+    tags: true
