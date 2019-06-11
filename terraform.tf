@@ -1,30 +1,29 @@
-provider archive {
-  version = "~> 1.1"
+terraform {
+  backend s3 {
+    bucket  = "terraform.bostondsa.org"
+    key     = "members.tfstate"
+    region  = "us-east-1"
+    profile = "bdsa"
+  }
+
+  required_providers {
+    aws = ">= 2.7"
+  }
 }
 
 provider aws {
-  access_key = "${var.aws_access_key_id}"
-  secret_key = "${var.aws_secret_access_key}"
-  profile    = "${var.aws_profile}"
-  region     = "${var.aws_region}"
-  version    = "~> 1.58"
+  version = "~> 2.7"
 }
 
 locals {
   domain_name = "members.bostondsa.org"
   stage_name  = "prod"
 
-  tags {
+  tags = {
     App     = "members"
     Repo    = "${var.repo}"
     Release = "${var.release}"
   }
-}
-
-data archive_file package {
-  output_path = "${path.module}/dist/package.zip"
-  source_dir  = "${path.module}/build"
-  type        = "zip"
 }
 
 data aws_acm_certificate cert {
@@ -162,18 +161,18 @@ resource aws_iam_role_policy_attachment basic {
 
 resource aws_lambda_function lambda {
   description      = "Member portal"
-  filename         = "${data.archive_file.package.output_path}"
+  filename         = "${path.module}/package.zip"
   function_name    = "${var.lambda_function_name}"
   handler          = "lambda.handler"
   memory_size      = 2048
   role             = "${aws_iam_role.role.arn}"
   runtime          = "nodejs8.10"
-  source_code_hash = "${data.archive_file.package.output_base64sha256}"
+  source_code_hash = filebase64sha256("${path.module}/package.zip")
   tags             = "${local.tags}"
   timeout          = 29
 
   environment {
-    variables {
+    variables = {
       AWS_SECRET              = "${data.aws_secretsmanager_secret.secret.name}"
       HOST                    = "https://${local.domain_name}"
       SLACK_MESSAGE_TOPIC_ARN = "${data.aws_sns_topic.post_messages.arn}"
@@ -186,4 +185,43 @@ resource aws_lambda_permission invoke {
   function_name = "${aws_lambda_function.lambda.arn}"
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.api.execution_arn}/*/*/*"
+}
+
+variable api_name {
+  description = "API Gateway REST API name."
+  default     = "members"
+}
+
+variable acm_certificate_domain {
+  description = "ACM certificate domain."
+  default     = "members.bostondsa.org"
+}
+
+variable lambda_function_name {
+  description = "Lambda function name."
+  default     = "members"
+}
+
+variable release {
+  description = "Release tag."
+}
+
+variable repo {
+  description = "Project repository."
+  default     = "https://github.com/BostonDSA/members.git"
+}
+
+variable role_name {
+  description = "IAM role name."
+  default     = "members"
+}
+
+variable secret_name {
+  description = "SecretsManager secret name."
+  default     = "members"
+}
+
+output url {
+  description = "App URL."
+  value       = "https://${aws_api_gateway_domain_name.domain.domain_name}"
 }
