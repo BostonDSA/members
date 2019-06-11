@@ -17,15 +17,19 @@ Chapter portal
 
 ## Deploy
 
-- Run `make` to build a Docker image that generates:
+Deployment should happen automatically by tagging the project and pushing to GitHub, but the project can be deployed manually as well:
+
+- `make` builds a Docker image that generates:
   - An updated `package-lock.json` file (if applicable)
   - A `package.zip` file with the AWS Lambda package contents
   - A `.docker/` directory to keep track of your built images
-- Run `make apply` to apply the changes to production
+- `make apply` applies the changes to production (danger!)
+- `make clean` cleans up untracked artifacts
 
-Alternatively, you can deploy manually with terraform:
+Alternatively, you can deploy with terraform:
 
-- Run `make` to generate `package.zip`
-- Run `terraform init` to initialize the project
-- Run `terraform plan` to review the changes
-- Run `terraform apply` to apply them
+- `make package.zip` will generate the Lambda package
+- `terraform init` initializes the project
+- `terraform plan` outputs the proposed changes
+- `terraform apply` applies them (with a prompt)
+- `make clean` cleans up untracked artifacts
