@@ -28,7 +28,10 @@ Deployment should happen automatically by tagging the project and pushing to Git
 
 Alternatively, you can deploy with terraform:
 
-- `make package.zip` will generate the Lambda package
+- `make` builds a Docker image that generates:
+  - An updated `package-lock.json` file (if applicable)
+  - A `package.zip` file with the AWS Lambda package contents
+  - A `.docker/` directory to keep track of your built images
 - `terraform init` initializes the project
 - `terraform plan` outputs the proposed changes
 - `terraform apply` applies them (with a prompt)
