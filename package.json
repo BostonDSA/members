@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@slack/client": "^4.8.0",
+    "@slack/web-api": "^5.0.1",
     "aws-serverless-express": "^3.3.5",
     "body-parser": "^1.18.3",
     "dotenv": "^6.2.0",

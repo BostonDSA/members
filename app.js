@@ -6,7 +6,7 @@ const expressJwt     = require('express-jwt');
 const expressSession = require('express-session');
 const jwksRsa        = require('jwks-rsa');
 const url            = require('url');
-const { WebClient }  = require('@slack/client');
+const { WebClient }  = require('@slack/web-api');
 
 const slack = new WebClient(process.env.SLACK_TOKEN);
 const SNS   = new AWS.SNS();
