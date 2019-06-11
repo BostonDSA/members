@@ -1,4 +1,6 @@
 *
-!*.js
+!views/
 !*.tf
+!app.js
+!lambda.js
 !package*.json
