@@ -70,10 +70,20 @@ const CARDS = {
     title:    'Blog',
     url:      'https://bostonpewg.org/',
   },
+  vote: {
+    alt:      'Vote',
+    bg:       '#ea290b',
+    icon:     'http://www.insideronline.org/wp-content/uploads/2016/06/elections-icon.gif',
+    style:    'height: 91px;',
+    subtitle: 'Chapter Elections Discussion',
+    title:    'Elections',
+    url:      'http://vote.bostondsa.org/'
+  }
 };
 const ROWS = [
   Object.values(CARDS).slice(0, 3),
   Object.values(CARDS).slice(3, 6),
+  Object.values(CARDS).slice(6, 9),
 ];
 
 const app     = express();
