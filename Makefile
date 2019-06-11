@@ -26,7 +26,11 @@ package.zip: .docker/$(build)
 	docker run --rm $(shell cat $<) cat /var/task/$@ > $@
 
 apply: .docker/$(build)
-	docker run --rm $(shell cat $<)
+	docker run --rm \
+	--env AWS_ACCESS_KEY_ID \
+	--env AWS_DEFAULT_REGION \
+	--env AWS_SECRET_ACCESS_KEY \
+	$(shell cat $<)
 
 clean:
 	-docker image rm -f $(shell sed G .docker/*)
