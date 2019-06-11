@@ -15,8 +15,5 @@
   "devDependencies": {
     "aws-sdk": "^2.400.0"
   },
-  "private": true,
-  "scripts": {
-    "build": "docker-compose run build && docker-compose down"
-  }
+  "private": true
 }
