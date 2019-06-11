@@ -81,7 +81,7 @@ resource aws_api_gateway_base_path_mapping base_path {
 }
 
 resource aws_api_gateway_deployment prod {
-  depends_on  = [
+  depends_on = [
     "aws_api_gateway_integration.get",
     "aws_api_gateway_integration.proxy_any",
     "aws_api_gateway_method.get",
