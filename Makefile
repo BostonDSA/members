@@ -2,6 +2,8 @@ name    := members
 runtime := nodejs8.10
 build   := $(shell git describe --tags --always)
 
+.PHONY: all apply clean
+
 all: package-lock.json package.zip
 
 .docker:
@@ -23,11 +25,9 @@ package-lock.json: .docker/$(build)
 package.zip: .docker/$(build)
 	docker run --rm $(shell cat $<) cat /var/task/$@ > $@
 
-.PHONY: apply clean
-
 apply: .docker/$(build)
 	docker run --rm $(shell cat $<)
 
 clean:
 	-docker image rm -f $(shell sed G .docker/*)
-	-rm -rf .docker
+	-rm -rf .docker *.zip
