@@ -1,9 +1,10 @@
 name    := members
 runtime := nodejs10.x
+stages  := build plan
 build   := $(shell git describe --tags --always)
-digest   = $(shell cat .docker/$(build)$(1))
+shells  := $(foreach stage,$(stages),shell@$(stage))
 
-.PHONY: all apply clean plan shell@%
+.PHONY: all apply clean plan $(stages) $(shells)
 
 all: package-lock.json package.zip
 
@@ -23,20 +24,18 @@ all: package-lock.json package.zip
 	--target $* .
 
 package-lock.json package.zip: .docker/$(build)@build
-	docker run --rm -w /var/task/ $(call digest,@build) cat $@ > $@
+	docker run --rm -w /var/task/ $(shell cat $<) cat $@ > $@
 
-apply: plan
-	docker run --rm \
-	--env AWS_ACCESS_KEY_ID \
-	--env AWS_DEFAULT_REGION \
-	--env AWS_SECRET_ACCESS_KEY \
-	$(shell cat $<)
+apply: .docker/$(build)@plan .env
+	docker run --rm --env-file .env	$(shell cat $<)
 
 clean:
-	-docker image rm -f $(shell sed G .docker/*)
+	-docker image rm -f $(shell awk {print} .docker/*)
 	-rm -rf .docker *.zip
 
 plan: all .docker/$(build)@plan
 
-shell@%: .docker/$(build)@% .env
+$(stages): %: .docker/$(build)@%
+
+$(shells): shell@%: .docker/$(build)@% .env
 	docker run --rm -it $(call digest,@$*) /bin/bash
