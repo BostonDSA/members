@@ -1,12 +1,12 @@
 name    := members
 runtime := nodejs10.x
-stages  := build plan
+stages  := build dev plan
 build   := $(shell git describe --tags --always)
 shells  := $(foreach stage,$(stages),shell@$(stage))
 
 terraform_version := 0.12.5
 
-.PHONY: all apply clean plan $(stages) $(shells)
+.PHONY: all apply clean up $(stages) $(shells)
 
 all: package-lock.json package.zip
 
@@ -39,6 +39,13 @@ apply: .docker/$(build)@plan
 clean:
 	-docker image rm -f $(shell awk {print} .docker/*)
 	-rm -rf .docker *.zip
+
+up: .docker/$(build)@build .env
+	docker run --rm \
+	--env-file .env \
+	--publish 3000:3000 \
+	$(shell cat $<) \
+	npm start
 
 $(stages): %: .docker/$(build)@%
 

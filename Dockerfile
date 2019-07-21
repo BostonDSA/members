@@ -2,8 +2,7 @@ ARG RUNTIME=nodejs10.x
 ARG TERRAFORM_VERSION=0.12.5
 
 FROM lambci/lambda:build-${RUNTIME} AS build
-COPY *.js package*.json /var/task/
-RUN npm install --package-lock-only
+COPY . .
 RUN npm install --production
 RUN zip -r package.zip *.js node_modules package*.json views
 
