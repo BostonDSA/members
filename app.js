@@ -120,6 +120,7 @@ app.use(session);
 app.use(express.static('./views'));
 app.use((req, res, next) => {
   if (req.query && req.query.token) {
+    console.log(`REDIRECT ${req.originalUrl}`)
     req.session.token = req.query.token;
     res.redirect(url.parse(req.originalUrl).pathname);
   } else {
@@ -241,7 +242,7 @@ app.use((err, req, res, next) => {
     redir.host        = redir.host || HOST;
     redir.query.token = undefined;
     redir = `${AUTH_HOST}/auth?r=${encodeURIComponent(redir.format())}`;
-    console.log(`AUTH ${redir}`);
+    console.log(`REDIRECT ${redir}`);
     res.redirect(redir);
   }
 });
