@@ -58,7 +58,7 @@ data aws_iam_policy_document inline {
   statement {
     sid       = "PublishToSns"
     actions   = ["sns:Publish"]
-    resources = ["${data.aws_sns_topic.post_messages.arn}"]
+    resources = ["${data.aws_sns_topic.slackbot.arn}"]
   }
 }
 
@@ -66,8 +66,8 @@ data aws_secretsmanager_secret secret {
   name = "${var.secret_name}"
 }
 
-data aws_sns_topic post_messages {
-  name = "slack_socialismbot_post_message"
+data aws_sns_topic slackbot {
+  name = "slack-socialismbot"
 }
 
 resource aws_api_gateway_domain_name domain {
@@ -175,9 +175,9 @@ resource aws_lambda_function lambda {
 
   environment {
     variables = {
-      AWS_SECRET              = "${data.aws_secretsmanager_secret.secret.name}"
-      HOST                    = "https://${local.domain_name}"
-      SLACK_MESSAGE_TOPIC_ARN = "${data.aws_sns_topic.post_messages.arn}"
+      AWS_SECRET      = "${data.aws_secretsmanager_secret.secret.name}"
+      HOST            = "https://${local.domain_name}"
+      SLACK_TOPIC_ARN = "${data.aws_sns_topic.slackbot.arn}"
     }
   }
 }
