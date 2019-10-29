@@ -11,14 +11,14 @@ const { WebClient }  = require('@slack/web-api');
 const slack = new WebClient(process.env.SLACK_TOKEN);
 const SNS   = new AWS.SNS();
 
-const AUTH_HOST               = process.env.AUTH_HOST;
-const AUTH0_AUDIENCE          = process.env.AUTH0_AUDIENCE;
-const AUTH0_DOMAIN            = process.env.AUTH0_DOMAIN;
-const AUTH0_SESSION_SECRET    = process.env.AUTH0_SESSION_SECRET;
-const HOST                    = process.env.HOST;
-const SLACK_URL               = process.env.SLACK_URL;
-const SLACK_INVITE_CHANNEL    = process.env.SLACK_INVITE_CHANNEL;
-const SLACK_MESSAGE_TOPIC_ARN = process.env.SLACK_MESSAGE_TOPIC_ARN;
+const AUTH_HOST            = process.env.AUTH_HOST;
+const AUTH0_AUDIENCE       = process.env.AUTH0_AUDIENCE;
+const AUTH0_DOMAIN         = process.env.AUTH0_DOMAIN;
+const AUTH0_SESSION_SECRET = process.env.AUTH0_SESSION_SECRET;
+const HOST                 = process.env.HOST;
+const SLACK_URL            = process.env.SLACK_URL;
+const SLACK_INVITE_CHANNEL = process.env.SLACK_INVITE_CHANNEL;
+const SLACK_TOPIC_ARN      = process.env.SLACK_TOPIC_ARN;
 
 const CARDS = {
   website: {
@@ -206,8 +206,18 @@ app.post('/home/slack/join', checkJwt, (req, res) => {
     ],
   }
   SNS.publish({
-    TopicArn: SLACK_MESSAGE_TOPIC_ARN,
+    TopicArn: SLACK_TOPIC_ARN,
     Message:  JSON.stringify(message),
+    MessageAttributes: {
+      id: {
+        DataType: 'String',
+        StringValue: 'postMessage',
+      },
+      type: {
+        DataType: 'String',
+        StringValue: 'chat',
+      },
+    },
   }).promise().then(() => {
     res.render('slack', {
       email: req.user.email,
