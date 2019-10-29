@@ -1,12 +1,12 @@
 ARG RUNTIME=nodejs10.x
-ARG TERRAFORM_VERSION=0.12.5
+ARG TERRAFORM=latest
 
 FROM lambci/lambda:build-${RUNTIME} AS build
 COPY . .
 RUN npm install --production
 RUN zip -r package.zip *.js node_modules package*.json views
 
-FROM hashicorp/terraform:${TERRAFORM_VERSION} AS plan
+FROM hashicorp/terraform:${TERRAFORM} AS plan
 WORKDIR /var/task/
 COPY --from=build /var/task/package.zip .
 COPY terraform.tf .

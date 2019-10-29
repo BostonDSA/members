@@ -1,10 +1,8 @@
-name    := members
-runtime := nodejs10.x
-stages  := build dev plan
-build   := $(shell git describe --tags --always)
-shells  := $(foreach stage,$(stages),shell@$(stage))
-
-terraform_version := 0.12.5
+runtime   := nodejs10.x
+stages    := build dev plan
+terraform := latest
+build     := $(shell git describe --tags --always)
+shells    := $(foreach stage,$(stages),shell@$(stage))
 
 .PHONY: all apply clean up $(stages) $(shells)
 
@@ -20,10 +18,10 @@ all: package-lock.json package.zip
 	--build-arg AWS_ACCESS_KEY_ID \
 	--build-arg AWS_DEFAULT_REGION \
 	--build-arg AWS_SECRET_ACCESS_KEY \
-	--build-arg TERRAFORM_VERSION=$(terraform_version) \
+	--build-arg TERRAFORM=$(terraform) \
 	--build-arg TF_VAR_release=$(build) \
 	--iidfile $@ \
-	--tag boston-dsa/$(name):$(build)-$* \
+	--tag boston-dsa/members:$(build)-$* \
 	--target $* .
 
 package-lock.json package.zip: .docker/$(build)@build
