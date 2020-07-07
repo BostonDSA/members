@@ -1,3 +1,13 @@
+locals {
+  domain_name = "members.bostondsa.org"
+  stage_name  = "prod"
+
+  tags = {
+    App  = "members"
+    Repo = "https://github.com/BostonDSA/members"
+  }
+}
+
 terraform {
   backend s3 {
     bucket  = "terraform.bostondsa.org"
@@ -6,26 +16,12 @@ terraform {
     profile = "bdsa"
   }
 
-  required_version = ">= 0.12.0"
-
-  required_providers {
-    aws = ">= 2.7"
-  }
+  required_version = "~> 0.12"
 }
 
 provider aws {
+  region  = "us-east-1"
   version = "~> 2.7"
-}
-
-locals {
-  domain_name = "members.bostondsa.org"
-  stage_name  = "prod"
-
-  tags = {
-    App     = "members"
-    Repo    = var.repo
-    Release = var.release
-  }
 }
 
 data aws_acm_certificate cert {
@@ -63,7 +59,7 @@ data aws_iam_policy_document inline {
 }
 
 data aws_secretsmanager_secret secret {
-  name = var.secret_name
+  name = "members"
 }
 
 data aws_sns_topic slackbot {
@@ -147,11 +143,11 @@ resource aws_cloudwatch_log_group logs {
 
 resource aws_iam_role role {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
-  name               = var.role_name
+  name               = "members"
 }
 
 resource aws_iam_role_policy inline {
-  name   = var.role_name
+  name   = "members"
   policy = data.aws_iam_policy_document.inline.json
   role   = aws_iam_role.role.name
 }
@@ -204,26 +200,7 @@ variable lambda_function_name {
   default     = "members"
 }
 
-variable release {
-  description = "Release tag"
-}
-
-variable repo {
-  description = "Project repository"
-  default     = "https://github.com/BostonDSA/members.git"
-}
-
-variable role_name {
-  description = "IAM role name"
-  default     = "members"
-}
-
-variable secret_name {
-  description = "SecretsManager secret name"
-  default     = "members"
-}
-
 output url {
   description = "App URL"
-  value       = "https://${aws_api_gateway_domain_name.domain.domain_name}"
+  value       = "https://${aws_api_gateway_domain_name.domain.domain_name}/"
 }
