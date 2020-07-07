@@ -1,4 +1,4 @@
-ARG RUNTIME=nodejs10.x
+ARG RUNTIME=nodejs12.x
 FROM lambci/lambda:build-${RUNTIME}
 COPY . .
 RUN npm install --production
