@@ -8,11 +8,9 @@
 # .tfvars files
 *.tfvars
 
-**/.docker/
 **/.terraform/
-**/build/
-**/dist/
 **/node_modules/
+**/*.DS_Store
+**/*.env
+**/*.iid
 **/*.zip
-**/.DS_Store
-**/.env
