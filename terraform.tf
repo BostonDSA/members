@@ -10,18 +10,17 @@ locals {
 
 terraform {
   backend s3 {
-    bucket  = "terraform.bostondsa.org"
-    key     = "members.tfstate"
-    region  = "us-east-1"
-    profile = "bdsa"
+    bucket = "terraform.bostondsa.org"
+    key    = "members.tfstate"
+    region = "us-east-1"
   }
 
-  required_version = "~> 0.12"
+  required_version = "~> 0.13"
 }
 
 provider aws {
   region  = "us-east-1"
-  version = "~> 2.7"
+  version = "~> 3.1"
 }
 
 data aws_acm_certificate cert {
