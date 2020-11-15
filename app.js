@@ -75,9 +75,9 @@ const CARDS = {
     bg:       '#ea290b',
     icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Ballot_box_icon_color.svg/1006px-Ballot_box_icon_color.svg.png',
     style:    'height: 91px;',
-    subtitle: 'Chapter Elections Discussion',
-    title:    'Elections',
-    url:      'http://vote.bostondsa.org/'
+    subtitle: 'Chapter Voting Discussion',
+    title:    'Voting Discussion',
+    url:      'https://vote.bostondsa.org/'
   }
 };
 const ROWS = [
