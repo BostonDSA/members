@@ -78,7 +78,16 @@ const CARDS = {
     subtitle: 'Chapter Voting Discussion',
     title:    'Voting Discussion',
     url:      'https://vote.bostondsa.org/'
-  }
+  },
+  zoom: {
+    alt:      'Zoom Logo',
+    bg:       '#d0dff7',
+    icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Zoom_Communications_Logo.svg/320px-Zoom_Communications_Logo.svg.png',
+    style:    'height: 30px;',
+    subtitle: 'Virtual Meetings',
+    title:    'Zoom',
+    url:      '/home/zoom',
+  },
 };
 const ROWS = [
   Object.values(CARDS).slice(0, 3),
@@ -237,6 +246,10 @@ app.post('/home/slack/join', checkJwt, (req, res) => {
     });
   });
 })
+
+app.get('/home/zoom', checkJwt, (req, res) => {
+  res.render('zoom', {});
+});
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
