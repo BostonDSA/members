@@ -10,6 +10,7 @@ const { WebClient }  = require('@slack/web-api');
 
 const slack = new WebClient(process.env.SLACK_TOKEN);
 const SNS   = new AWS.SNS();
+const s3   = new AWS.S3();
 
 const AUTH_HOST            = process.env.AUTH_HOST;
 const AUTH0_AUDIENCE       = process.env.AUTH0_AUDIENCE;
@@ -19,6 +20,7 @@ const HOST                 = process.env.HOST;
 const SLACK_URL            = process.env.SLACK_URL;
 const SLACK_INVITE_CHANNEL = process.env.SLACK_INVITE_CHANNEL;
 const SLACK_TOPIC_ARN      = process.env.SLACK_TOPIC_ARN;
+const AWS_BUCKET           = process.env.AWS_BUCKET;
 
 const CARDS = {
   website: {
@@ -248,7 +250,18 @@ app.post('/home/slack/join', checkJwt, (req, res) => {
 })
 
 app.get('/home/zoom', checkJwt, (req, res) => {
-  res.render('zoom', {});
+  const params = {
+    Bucket: process.env.AWS_BUCKET,
+    Key: 'zoom_meetings.json'
+  };
+  s3.getObject(params, (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      let meetings = JSON.parse(data.Body);
+      res.render('zoom', {meetings: meetings});
+    }
+  });
 });
 
 app.get('/logout', (req, res) => {
