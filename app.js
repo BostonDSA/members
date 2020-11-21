@@ -43,9 +43,9 @@ const CARDS = {
     alt:      'Calendar Logo',
     bg:       '#821d1d',
     icon:     'https://upload.wikimedia.org/wikipedia/commons/5/56/Apple_Calendar_Icon.png',
-    subtitle: 'Subscribe to Chapter Calendar',
+    subtitle: 'Chapter Events',
     title:    'Calendar',
-    url:      'https://calendars.dsausa.org/u21m8kt8bb1lflp8jpmd317iik%40group.calendar.google.com',
+    url:      'https://www.bostondsa.org/events/',
   },
   slack: {
     alt:      'Slack Logo',
@@ -90,6 +90,7 @@ const CARDS = {
     title:    'Zoom',
     url:      '/home/zoom',
   },
+
 };
 const ROWS = [
   Object.values(CARDS).slice(0, 3),
