@@ -38,7 +38,10 @@ data aws_iam_policy_document assume_role {
 
     principals {
       type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
+      identifiers = [
+        "lambda.amazonaws.com",
+        "events.amazonaws.com"
+      ]
     }
   }
 }
@@ -55,6 +58,34 @@ data aws_iam_policy_document inline {
     actions   = ["sns:Publish"]
     resources = [data.aws_sns_topic.slackbot.arn]
   }
+
+  statement {
+    sid       = "GetObjectFromS3"
+    actions   = ["s3:GetObject"]
+    resources = [format("%s/*", aws_s3_bucket.bucket.arn)]
+  }
+
+}
+
+data aws_iam_policy_document zoom {
+  statement {
+    sid       = "GetSecretValue"
+    actions   = ["secretsmanager:GetSecretValue"]
+    resources = [data.aws_secretsmanager_secret.secret.arn]
+  }
+
+  statement {
+    sid       = "ListObjectsInBucket"
+    actions   = ["s3:ListBucket"]
+    resources = [aws_s3_bucket.bucket.arn]
+  }
+
+  statement {
+    sid       = "AllObjectActions"
+    actions   = ["s3:*Object"]
+    resources = [format("%s/*", aws_s3_bucket.bucket.arn)]
+  }
+
 }
 
 data aws_secretsmanager_secret secret {
@@ -171,6 +202,7 @@ resource aws_lambda_function lambda {
   environment {
     variables = {
       AWS_SECRET      = data.aws_secretsmanager_secret.secret.name
+      AWS_BUCKET      = var.bucket
       HOST            = "https://${local.domain_name}"
       SLACK_TOPIC_ARN = data.aws_sns_topic.slackbot.arn
     }
@@ -184,6 +216,83 @@ resource aws_lambda_permission invoke {
   source_arn    = "${aws_api_gateway_rest_api.api.execution_arn}/*/*/*"
 }
 
+# Zoom Meeting Fetcher
+resource aws_iam_role zoom_role {
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  name               = "zoom"
+}
+
+resource aws_iam_role_policy zoom_inline {
+  name   = "zoom"
+  policy = data.aws_iam_policy_document.zoom.json
+  role   = aws_iam_role.zoom_role.name
+}
+
+resource aws_iam_role_policy_attachment zoom_basic {
+  policy_arn = data.aws_iam_policy.basic.arn
+  role       = aws_iam_role.zoom_role.name
+}
+
+resource aws_lambda_function zoom {
+  description      = "Zoom Meeting Fetcher"
+  filename         = "${path.module}/package.zip"
+  function_name    = "zoom_meeting_fetcher"
+  handler          = "zoom_meeting_fetcher.handler"
+  memory_size      = 2048
+  role             = aws_iam_role.zoom_role.arn
+  runtime          = "nodejs12.x"
+  source_code_hash = filebase64sha256("${path.module}/package.zip")
+  tags             = local.tags
+  timeout          = 29
+
+  environment {
+    variables = {
+      AWS_SECRET      = data.aws_secretsmanager_secret.secret.name
+      AWS_BUCKET      = var.bucket
+    }
+  }
+}
+
+resource aws_cloudwatch_event_rule zoom {
+  description         = "Sync Zoom meetings to S3"
+  name                = aws_lambda_function.zoom.function_name
+  role_arn            = aws_iam_role.zoom_role.arn
+  schedule_expression = "rate(15 minutes)"
+}
+
+resource aws_cloudwatch_event_target zoom {
+  arn   = aws_lambda_function.zoom.arn
+  input = "{}"
+  rule  = aws_cloudwatch_event_rule.zoom.name
+}
+
+resource aws_cloudwatch_log_group zoom_logs {
+  name              = "/aws/lambda/${aws_lambda_function.zoom.function_name}"
+  retention_in_days = 30
+  tags              = local.tags
+}
+
+resource aws_lambda_permission zoom {
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.zoom.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.zoom.arn
+}
+
+resource aws_s3_bucket bucket {
+  bucket = var.bucket
+  acl = "private"
+}
+
+resource "aws_s3_bucket_public_access_block" "saftey" {
+  bucket = aws_s3_bucket.bucket.id
+
+  block_public_acls   = true
+  block_public_policy = true
+  ignore_public_acls = true
+  restrict_public_buckets = true
+}
+
 variable api_name {
   description = "API Gateway REST API name"
   default     = "members"
@@ -191,6 +300,11 @@ variable api_name {
 
 variable acm_certificate_domain {
   description = "ACM certificate domain"
+  default     = "members.bostondsa.org"
+}
+
+variable bucket {
+  description = "S3 Bucket for the app"
   default     = "members.bostondsa.org"
 }
 
