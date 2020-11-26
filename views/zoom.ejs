@@ -24,7 +24,7 @@
       <div class="row">
         <h2>Zoom Meetings</h2>
       </div>
-      <div class="meetings">
+      <div class="row meetings">
       <% meetings["dates"].forEach(function(dt){ %>
         <hr>
         <% meetings["meetings"][dt].map((meeting) => { %>
@@ -42,7 +42,15 @@
         </div>
         <% }); %>
       <% }); %>
-    </div>
-    </div>
+      </div>
+      <div class="row zoom_account">
+        <dl>
+          <dt>Zoom Account 1</dt><dd>info@bostondsa.org</dd>
+          <dt>Zoom Account 2</dt><dd>treasurer@bostondsa.org</dd>
+          <dt>Zoom Account 3</dt><dd>zoom@bostondsa.org</dd>
+        </dl>
+        <p>More info can be found on the <a href="https://wiki.bostondsa.org/view/How_to_set_up_a_Zoom_call">wiki</a>.</p>
+      </div>
+    </div><!--container-->
   </body>
 </html>
