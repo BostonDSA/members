@@ -106,6 +106,14 @@ const CARDS = {
     title:    'Instagram',
     url:      'https://www.instagram.com/boston_dsa/',
   },
+  handbook: {
+    alt:      'New Member Handbook',
+    bg:       '#eeeeee',
+    icon:     'https://lh3.googleusercontent.com/vK2eHGgFULWa4G5Nwo6x-_GAgFpjnDPC0ELuGQd6GHLtoKHWXvLK-f1RYuVPFEDHRkGZGnN7clE1l6g4ZNCOeYPXkiZ2NV-_1QrIwdJXXLtVHrrYNDLY69wNIvj28HngNw=w1280',
+    subtitle: 'New Member Handbook',
+    title:    'Information for new members!',
+    url:      'https://sites.google.com/view/boston-dsa-new-member-handbook/home',
+  },
 };
 const ROWS = [
   Object.values(CARDS).slice(0, 3),
