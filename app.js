@@ -43,9 +43,9 @@ const CARDS = {
     alt:      'Calendar Logo',
     bg:       '#821d1d',
     icon:     'https://upload.wikimedia.org/wikipedia/commons/5/56/Apple_Calendar_Icon.png',
-    subtitle: 'Subscribe to Chapter Calendar',
+    subtitle: 'Chapter Events',
     title:    'Calendar',
-    url:      'https://calendars.dsausa.org/u21m8kt8bb1lflp8jpmd317iik%40group.calendar.google.com',
+    url:      'https://www.bostondsa.org/events/',
   },
   slack: {
     alt:      'Slack Logo',
@@ -90,11 +90,28 @@ const CARDS = {
     title:    'Zoom',
     url:      '/home/zoom',
   },
+  facebook: {
+    alt:      'Facebook Logo',
+    bg:       '#40516e',
+    icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/240px-Facebook_f_logo_%282019%29.svg.png',
+    subtitle: 'Facebook',
+    title:    'Facebook',
+    url:      'https://www.facebook.com/BostonDSA',
+  },
+  instagram: {
+    alt:      'Instagram Logo',
+    bg:       '#e9c2ed',
+    icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/132px-Instagram_logo_2016.svg.png',
+    subtitle: 'Instagram',
+    title:    'Instagram',
+    url:      'https://www.instagram.com/boston_dsa/',
+  },
 };
 const ROWS = [
   Object.values(CARDS).slice(0, 3),
   Object.values(CARDS).slice(3, 6),
   Object.values(CARDS).slice(6, 9),
+  Object.values(CARDS).slice(9, 12),
 ];
 
 const app     = express();
