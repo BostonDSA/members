@@ -17,6 +17,7 @@ const accounts = {
   '1': 'info@bostondsa.org',
   '2': 'treasurer@bostondsa.org',
   '3': 'zoom@bostondsa.org',
+  '4': 'electoral@bostondsa.org'
 };
 
 // Used for collecting the raw meetings
