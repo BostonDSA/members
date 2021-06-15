@@ -63,7 +63,7 @@ function isMeetingSoon(meetingStart, timezone) {
   const local = DateTime.local().setZone(timezone);
   return (
     meetingStart > local.minus({days: 1}) &&
-    meetingStart < local.plus({days: 21})
+    meetingStart < local.plus({days: 42})
   );
 }
 
