@@ -17,7 +17,7 @@
     "request-promise": "^4.2.4"
   },
   "devDependencies": {
-    "aws-sdk": "^2.554.0",
+    "aws-sdk": "^2.814.0",
     "dotenv": "^8.2.0"
   },
   "private": true
