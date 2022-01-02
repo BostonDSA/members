@@ -2,20 +2,18 @@
 const AWS            = require('aws-sdk');
 const bodyParser     = require('body-parser');
 const express        = require('express');
-const expressJwt     = require('express-jwt');
-const expressSession = require('express-session');
-const jwksRsa        = require('jwks-rsa');
+const Keycloak       = require('keycloak-connect');
 const url            = require('url');
 const { WebClient }  = require('@slack/web-api');
+
+const session        = require('express-session');
+const MemoryStore    = require('memorystore')(session);
 
 const slack = new WebClient(process.env.SLACK_TOKEN);
 const SNS   = new AWS.SNS();
 const s3   = new AWS.S3();
 
 const AUTH_HOST            = process.env.AUTH_HOST;
-const AUTH0_AUDIENCE       = process.env.AUTH0_AUDIENCE;
-const AUTH0_DOMAIN         = process.env.AUTH0_DOMAIN;
-const AUTH0_SESSION_SECRET = process.env.AUTH0_SESSION_SECRET;
 const HOST                 = process.env.HOST;
 const SLACK_URL            = process.env.SLACK_URL;
 const SLACK_INVITE_CHANNEL = process.env.SLACK_INVITE_CHANNEL;
@@ -122,59 +120,45 @@ const ROWS = [
   Object.values(CARDS).slice(9, 12),
 ];
 
-const app     = express();
-const session = expressSession({
-  secret:            AUTH0_SESSION_SECRET,
-  resave:            false,
-  saveUninitialized: true,
-});
-const secret = jwksRsa.expressJwtSecret({
-  cache:                 true,
-  rateLimit:             true,
-  jwksRequestsPerMinute: 5,
-  jwksUri:               `https://${AUTH0_DOMAIN}/.well-known/jwks.json`
-});
-const getToken = (req) => {
-  if (req.session && req.session.token) {
-    return req.session.token;
-  } else if (req.query && req.query.token) {
-    return req.query.token;
-  } else {
-    return null;
-  }
+const keycloakConfig = {
+  clientId: process.env.KEYCLOAK_CLIENT_ID,
+  serverUrl: process.env.KEYCLOAK_URL,
+  realm: process.env.KEYCLOAK_REALM,
+  secret: process.env.KEYCLOAK_CLIENT_SECRET
 };
-const checkJwt = expressJwt({
-  secret:     secret,
-  audience:   AUTH0_AUDIENCE,
-  issuer:     `https://${AUTH0_DOMAIN}/`,
-  algorithms: ['RS256'],
-  getToken:   getToken,
-});
+
+const memoryStore = new MemoryStore({checkPeriod: 86400000});
+
+const app     = express();
+const keycloak = new Keycloak(
+  {
+    store: memoryStore
+  },
+  keycloakConfig
+);
 
 app.set('view engine', 'ejs');
-app.use(session);
+app.use(session({
+  secret: 'mySecret',
+  resave: false,
+  saveUninitialized: true,
+  store: memoryStore
+}));
+app.use(keycloak.middleware());
 app.use(express.static('./views'));
-app.use((req, res, next) => {
-  if (req.query && req.query.token) {
-    console.log(`REDIRECT ${req.originalUrl}`)
-    req.session.token = req.query.token;
-    res.redirect(url.parse(req.originalUrl).pathname);
-  } else {
-    next();
-  }
-});
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.redirect('/home');
+  res.render('maint');
 });
 
-app.get('/home', checkJwt, (req, res) => {
+app.get('/home', keycloak.protect(), (req, res) => {
   res.render('index', {email: req.user.email, rows: ROWS});
 });
 
-app.get('/home/slack', checkJwt, (req, res) => {
+app.get('/home/slack', keycloak.protect(), (req, res) => {
   slack.users.lookupByEmail({email: req.user.email}).then(() => {
     res.redirect(SLACK_URL);
   }).catch((err) => {
@@ -182,11 +166,11 @@ app.get('/home/slack', checkJwt, (req, res) => {
   });
 });
 
-app.get('/home/slack/join', checkJwt, (req, res) => {
+app.get('/home/slack/join', keycloak.protect(), (req, res) => {
   res.render('slack', {email: req.user.email, alert: undefined});
 });
 
-app.post('/home/slack/join', checkJwt, (req, res) => {
+app.post('/home/slack/join', keycloak.protect(), (req, res) => {
   const message = {
     channel: SLACK_INVITE_CHANNEL,
     text: 'A new DSA member is requesting to join Slack',
@@ -274,7 +258,7 @@ app.post('/home/slack/join', checkJwt, (req, res) => {
   });
 })
 
-app.get('/home/zoom', checkJwt, (req, res) => {
+app.get('/home/zoom', keycloak.protect(), (req, res) => {
   const params = {
     Bucket: process.env.AWS_BUCKET,
     Key: 'zoom_meetings.json'
@@ -289,13 +273,7 @@ app.get('/home/zoom', checkJwt, (req, res) => {
   });
 });
 
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  const redir = encodeURIComponent(`${HOST}/home`);
-  res.redirect(`${AUTH_HOST}/logout?r=${redir}`);
-});
-
-app.use((err, req, res, next) => {
+/*app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
     console.error(err);
     var redir = url.parse(req.originalUrl, true);
@@ -306,6 +284,6 @@ app.use((err, req, res, next) => {
     console.log(`REDIRECT ${redir}`);
     res.redirect(redir);
   }
-});
+});*/
 
 module.exports = app;
