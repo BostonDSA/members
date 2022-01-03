@@ -157,12 +157,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', keycloak.protect(), (req, res) => {
-  res.render('index', {email: req.user.email, rows: ROWS});
+  res.render('index', {email: req.kauth.grant.access_token.content.email, rows: ROWS});
 });
 
-
 app.get('/home/slack', keycloak.protect(), (req, res) => {
-  slack.users.lookupByEmail({email: req.user.email}).then(() => {
+  slack.users.lookupByEmail({email: req.kauth.grant.access_token.content.email}).then(() => {
     res.redirect(SLACK_URL);
   }).catch((err) => {
     res.redirect('/home/slack/join');
@@ -170,7 +169,7 @@ app.get('/home/slack', keycloak.protect(), (req, res) => {
 });
 
 app.get('/home/slack/join', keycloak.protect(), (req, res) => {
-  res.render('slack', {email: req.user.email, alert: undefined});
+  res.render('slack', {email: req.kauth.grant.access_token.content.email, alert: undefined});
 });
 
 app.post('/home/slack/join', keycloak.protect(), (req, res) => {
@@ -189,7 +188,7 @@ app.post('/home/slack/join', keycloak.protect(), (req, res) => {
           },
           {
             title: 'Email',
-            value: req.user.email,
+            value: req.kauth.grant.access_token.content.email,
             short: true,
           }
         ],
@@ -210,7 +209,7 @@ app.post('/home/slack/join', keycloak.protect(), (req, res) => {
             name:  'invite',
             text:  'Invite',
             type:  'button',
-            value: req.user.email,
+            value: req.kauth.grant.access_token.content.email,
           },
           {
             confirm: {
@@ -243,7 +242,7 @@ app.post('/home/slack/join', keycloak.protect(), (req, res) => {
     },
   }).promise().then(() => {
     res.render('slack', {
-      email: req.user.email,
+      email: req.kauth.grant.access_token.content.email,
       alert: {
         text: 'Thanks! Your request is being reviewed by the Slack moderators',
         cls:  'good',
@@ -252,7 +251,7 @@ app.post('/home/slack/join', keycloak.protect(), (req, res) => {
   }).catch((err) => {
     console.error(JSON.stringify(err));
     res.render('slack', {
-      email: req.user.email,
+      email: req.kauth.grant.access_token.content.email,
       alert: {
         text: 'Oops, something went wrong. Email tech@bostondsa.org to report the problem.',
         cls:  'error',
