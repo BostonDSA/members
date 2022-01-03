@@ -207,6 +207,11 @@ resource aws_lambda_function lambda {
       SLACK_TOPIC_ARN = data.aws_sns_topic.slackbot.arn
     }
   }
+
+  lifecycle {
+    ignore_changes = [environment]
+  }
+
 }
 
 resource aws_lambda_permission invoke {
