@@ -138,6 +138,8 @@ const keycloak = new Keycloak(
 );
 
 app.set('view engine', 'ejs');
+app.enable('trust proxy')
+
 app.use(session({
   secret: 'mySecret',
   resave: false,
@@ -157,6 +159,7 @@ app.get('/', (req, res) => {
 app.get('/home', keycloak.protect(), (req, res) => {
   res.render('index', {email: req.user.email, rows: ROWS});
 });
+
 
 app.get('/home/slack', keycloak.protect(), (req, res) => {
   slack.users.lookupByEmail({email: req.user.email}).then(() => {
