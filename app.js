@@ -153,7 +153,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.render('maint');
+  res.redirect('/home');
 });
 
 app.get('/home', keycloak.protect(), (req, res) => {
@@ -274,18 +274,5 @@ app.get('/home/zoom', keycloak.protect(), (req, res) => {
     }
   });
 });
-
-/*app.use((err, req, res, next) => {
-  if (err.name === 'UnauthorizedError') {
-    console.error(err);
-    var redir = url.parse(req.originalUrl, true);
-    redir.scheme      = redir.scheme || 'https';
-    redir.host        = redir.host || HOST;
-    redir.query.token = undefined;
-    redir = `${AUTH_HOST}/auth?r=${encodeURIComponent(redir.format())}`;
-    console.log(`REDIRECT ${redir}`);
-    res.redirect(redir);
-  }
-});*/
 
 module.exports = app;
