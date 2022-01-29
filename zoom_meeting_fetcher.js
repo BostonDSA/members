@@ -92,7 +92,7 @@ async function loadStartFromOccurances(meeting) {
  * @param {Object} meeting
  * @param {string} zoomAccount
  */
-async function deocrateMeeting(meeting, zoomAccount) {
+async function decorateMeeting(meeting, zoomAccount) {
   if (meeting['type'] == 8) {
     try {
       log.debug(`Meeting ${meeting['id']} on Zoom ${zoomAccount} is recurring, loading from occurances`);
@@ -136,30 +136,47 @@ exports.handler = async function(event, context) {
   for (const zoomAccount in accounts) {
     log.info(`Fetching meetings for Zoom ${zoomAccount}`);
     const email = accounts[zoomAccount];
-    const prom = axios.get(
-        `https://api.zoom.us/v2/users/${email}/meetings?page_size=300`,
+    const userId = axios.get(
+        `https://api.zoom.us/v2/users/${email}`,
         {headers: {'Authorization': `Bearer ${token}`}})
-        .then(function(response) {
-          const waitOnMeetings = [];
-          for (const meeting of response.data.meetings) {
-            waitOnMeetings.push(
-                deocrateMeeting(meeting, zoomAccount)
-                    .then(function() {
-                      meetingsFromZoom.push(meeting);
-                    })
-                    .catch(function() {
-                      log.debug(`Skipping meeting "${meeting['topic']}" on Zoom ${zoomAccount} because of start time: ${meeting['start_time']}"`);
-                    }),
-            );
-          }
-
-          return Promise.all(waitOnMeetings).then(function(results) {
-            log.info(`Fetched meetings for Zoom ${zoomAccount}`);
+          .then(function(response) {
+              return response.data.id;
           });
-        })
-        .catch(function(error) {
-          log.error(error);
-        });
+    const prom = userId.then(function(uid) {
+        return axios.get(
+            `https://api.zoom.us/v2/users/${email}/meetings?page_size=300`,
+            {headers: {'Authorization': `Bearer ${token}`}})
+            .then(function(response) {
+                const waitOnMeetings = [];
+
+                // Meetings that were created by the current account but hosted by
+                // a different account will show up for both accounts. Filtering for
+                // only meetings actually hosted by this account will prevent duplicates.
+                hostedMeetings = response.data.meetings.filter(function(meeting, i) {
+                    return meeting.host_id == uid;
+                });
+
+                log.info(uid, hostedMeetings);
+                for (const meeting of hostedMeetings) {
+                    waitOnMeetings.push(
+                        decorateMeeting(meeting, zoomAccount)
+                            .then(function() {
+                                meetingsFromZoom.push(meeting);
+                            })
+                            .catch(function() {
+                                log.debug(`Skipping meeting "${meeting['topic']}" on Zoom ${zoomAccount} because of start time: ${meeting['start_time']}"`);
+                            }),
+                    );
+                }
+
+                return Promise.all(waitOnMeetings).then(function(results) {
+                    log.info(`Fetched meetings for Zoom ${zoomAccount}`);
+                });
+            })
+            .catch(function(error) {
+                log.error(error);
+            });
+    });
     zoomApiCalls.push(prom);
   }
 
