@@ -5,16 +5,14 @@
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "bottleneck": "^2.19.5",
-    "ejs": "^2.7.1",
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "express-jwt": "^6.0.0",
     "express-session": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
-    "jwks-rsa": "^1.6.0",
+    "keycloak-connect": "^16.1.0",
     "loglevel": "^1.7.1",
     "luxon": "^1.25.0",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "memorystore": "^1.6.6"
   },
   "devDependencies": {
     "aws-sdk": "^2.554.0",
