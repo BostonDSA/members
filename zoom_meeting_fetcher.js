@@ -72,7 +72,7 @@ function isMeetingSoon(meetingStart, timezone) {
  *
  * @param {Object} meeting
  */
-async function loadStartFromOccurances(meeting) {
+async function loadStartFromOccurrences(meeting) {
   try {
     const response = await axios.get(
         'https://api.zoom.us/v2/meetings/' + meeting['id'],
@@ -99,8 +99,8 @@ async function loadStartFromOccurances(meeting) {
 async function decorateMeeting(meeting, zoomAccount) {
   if (meeting['type'] == 8) {
     try {
-      log.debug(`Meeting ${meeting['id']} on Zoom ${zoomAccount} is recurring, loading from occurances`);
-      await lightLimit.schedule(() => loadStartFromOccurances(meeting));
+      log.debug(`Meeting ${meeting['id']} on Zoom ${zoomAccount} is recurring, loading from occurrences`);
+      await lightLimit.schedule(() => loadStartFromOccurrences(meeting));
     } catch (err) {
       log.error(err);
     }
