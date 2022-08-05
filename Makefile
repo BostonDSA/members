@@ -26,3 +26,6 @@ package-lock.json package.zip: package.zip.iid
 
 package.zip.iid: *.js package.json
 	docker build --build-arg RUNTIME=$(RUNTIME) --iidfile $@ --tag $(REPO) .
+
+zoom-local:
+	lambda-local --lambda-path zoom_meeting_fetcher.js --event-path event.json --envfile .env --timeout 300

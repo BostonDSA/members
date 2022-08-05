@@ -78,8 +78,12 @@ async function loadStartFromOccurances(meeting) {
         'https://api.zoom.us/v2/meetings/' + meeting['id'],
         {headers: {'Authorization': `Bearer ${token}`}});
 
-    if (response.data.occurrences.length) {
-      meeting['start_time'] = response.data.occurrences[0]['start_time'];
+    for (var i = 0; i < response.data.occurrences.length; i++) {
+      if (response.data.occurrences[i]['status'] != 'available') {
+        continue;
+      }
+      meeting['start_time'] = response.data.occurrences[i]['start_time'];
+      break;
     }
   } catch (err) {
     log.error(err);
