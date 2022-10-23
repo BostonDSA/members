@@ -23,25 +23,31 @@
 
       <% rows.map((row) => { %>
 
-        <div class="row">
-
-          <% row.map((card) => { %>
-
-            <div class="four columns">
-              <div class="card" onClick="location.href = '<%= card.url %>';">
-                <header class="card__header" style="background: <%= card.bg %>;">
-                  <img class="card__icon" src="<%= card.icon %>" alt="<%= card.alt %>" style="<%= card.style %>"/>
-                </header>
-                <section class="card__body">
-                  <h2 class="card__title"><%= card.title %></h2>
-                  <span class="card__subtitle"><%= card.subtitle %></span>
-                </section>
-              </div>
-            </div>
-
-          <% }); %>
-
+        <div class="row" style="margin-top: 1em;">
+          <h5><%= row.header %></h5>
         </div>
+
+        <% row.cards.forEach((group) => { %>
+          <div class="row">
+
+            <% group.map((card) => { %>
+
+              <div class="four columns">
+                <div class="card" onClick="location.href = '<%= card.url %>';">
+                  <header class="card__header" style="background: <%= card.bg %>;">
+                    <img class="card__icon" src="<%= card.icon %>" alt="<%= card.alt %>" style="<%= card.style %>"/>
+                  </header>
+                  <section class="card__body">
+                    <h2 class="card__title"><%= card.title %></h2>
+                    <span class="card__subtitle"><%= card.subtitle %></span>
+                  </section>
+                </div>
+              </div>
+
+            <% }); %>
+
+          </div>
+        <% }); %>
 
       <% }); %>
       <br/>
