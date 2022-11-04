@@ -109,6 +109,14 @@ const ROWS = [
           subtitle: 'Request a textbank',
           title:    'Textbank',
           url:      'https://forms.gle/ijrzYeVTwr4qHWEd7',
+        },
+        {
+          alt:      'Comms Requests',
+          bg:       '#eeeeee',
+          icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
+          subtitle: 'Comms Requests',
+          title:    'Comms Requests',
+          url:      'https://docs.google.com/document/d/1IePaR-I_yzcbavfSA2vbNNub80L7cRX2nHr7kfabe1o/edit?usp=sharing',
         }
       ]
     ]
