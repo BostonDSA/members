@@ -140,6 +140,14 @@ const ROWS = [
           subtitle: 'Chapter Orientations',
           title:    'Orientation',
           url:      'https://actionnetwork.org/campaigns/boston-dsa-member-orientations',
+        },
+        {
+          alt:      'Rose Buddies',
+          bg:       '#eeeeee',
+          icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Red_rose_02.svg/1920px-Red_rose_02.svg.png',
+          subtitle: 'Rose Buddies',
+          title:    'Rose Buddies',
+          url:      'https://bdsa.us/RoseBuddy',
         }
       ]
     ]
