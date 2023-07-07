@@ -82,7 +82,7 @@ const ROWS = [
           icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
           subtitle: 'Request an endorsement',
           title:    'Endorsements',
-          url:      'https://forms.gle/5cXw9gjy4MFuEDU79',
+          url:      'https://airtable.com/shrGf4B4DaW0WIwoO',
         },
         {
           alt:      'Request funding',
@@ -90,7 +90,7 @@ const ROWS = [
           icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
           subtitle: 'Request funding',
           title:    'Funding',
-          url:      'https://forms.gle/5cXw9gjy4MFuEDU79',
+          url:      'https://airtable.com/shrGf4B4DaW0WIwoO',
         },
         {
           alt:      'Request a chapter-wide email',
@@ -98,7 +98,7 @@ const ROWS = [
           icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
           subtitle: 'Request a chapter-wide email',
           title:    'Bulk email',
-          url:      'https://forms.gle/5cXw9gjy4MFuEDU79',
+          url:      'https://airtable.com/shrGf4B4DaW0WIwoO',
         }
       ],
       [
@@ -108,7 +108,7 @@ const ROWS = [
           icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
           subtitle: 'Request a textbank',
           title:    'Textbank',
-          url:      'https://forms.gle/ijrzYeVTwr4qHWEd7',
+          url:      'https://airtable.com/shrGf4B4DaW0WIwoO',
         },
         {
           alt:      'Comms Requests',
@@ -116,7 +116,7 @@ const ROWS = [
           icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
           subtitle: 'Comms Requests',
           title:    'Comms Requests',
-          url:      'https://docs.google.com/document/d/1IePaR-I_yzcbavfSA2vbNNub80L7cRX2nHr7kfabe1o/edit?usp=sharing',
+          url:      'https://airtable.com/shrGf4B4DaW0WIwoO',
         }
       ]
     ]
