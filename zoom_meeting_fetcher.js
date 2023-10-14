@@ -2,7 +2,6 @@ const AWS = require('aws-sdk');
 const axios = require('axios');
 const Bottleneck = require('bottleneck');
 const {DateTime} = require('luxon');
-const jwt = require('jsonwebtoken');
 const log = require('loglevel');
 
 log.setLevel(process.env.LOG_LEVEL || 'info');
@@ -12,6 +11,8 @@ const AWS_BUCKET = process.env.AWS_BUCKET;
 
 const s3 = new AWS.S3();
 const secretsmanager = new AWS.SecretsManager();
+
+var token;
 
 const accounts = {
   '1': 'info@bostondsa.org',
@@ -38,8 +39,6 @@ const lightLimit = new Bottleneck({
   maxConcurrent: 1,
   minTime: 100,
 });
-
-let token;
 
 /**
  * Load Zoom secrets stored in AWS Secrets Manager.
@@ -129,14 +128,22 @@ exports.handler = async function(event, context) {
   await loadSecrets({SecretId: AWS_SECRET});
   log.debug('Loaded secrets');
 
-  const payload = {
-    iss: process.env.ZOOM_API_KEY,
-    exp: ((new Date()).getTime() + 5000),
-  };
-  token = jwt.sign(payload, process.env.ZOOM_API_SECRET);
-
+  const tmpToken = Buffer.from(process.env.ZOOM_CLIENT_ID + ':' + process.env.ZOOM_CLIENT_SECRET).toString('base64');
+  const tokens = await axios.post(
+    'https://zoom.us/oauth/token',
+    {
+      grant_type: 'account_credentials',
+      account_id: 'Ucn5o8TwQbCrUQi31iWIZg'
+    },
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + tmpToken
+      }
+    }
+  );
+  token = tokens.data.access_token;
   const zoomApiCalls = [];
-
   for (const zoomAccount in accounts) {
     log.info(`Fetching meetings for Zoom ${zoomAccount}`);
     const email = accounts[zoomAccount];
