@@ -71,9 +71,8 @@ const ROWS = [
         },
         {
           alt:      'Google Drive',
-          bg:       '#ea290b',
+          bg:       '#eee',
           icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Drive_icon_%282020%29.svg/269px-Google_Drive_icon_%282020%29.svg.png',
-          style:    'height: 91px;',
           subtitle: 'Google Drive',
           title:    'Google Drive',
           url:      'https://drive.google.com/drive/u/0/folders/1YImSpo3uEkuY0SWbuwi0trsLsyC1BQNA'
