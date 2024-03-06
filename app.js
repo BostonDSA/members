@@ -43,9 +43,10 @@ const ROWS = [
         },
         {
           alt:      'Discord Logo',
-          bg:       '#ff4f4f',
+          bg:       '#eee',
           icon:     'https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Discord_logo.svg/320px-Discord_logo.svg.png',
           subtitle: 'Chapter chat',
+          style:    'height: 30px;',
           title:    'Discord',
           url:      'https://discord.gg/FpdWcFFwXC',
         }
