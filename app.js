@@ -42,12 +42,12 @@ const ROWS = [
           url:      'https://wiki.bostondsa.org/',
         },
         {
-          alt:      'Slack Logo',
+          alt:      'Discord Logo',
           bg:       '#ff4f4f',
-          icon:     'https://upload.wikimedia.org/wikipedia/commons/7/76/Slack_Icon.png',
-          subtitle: 'Join the conversation',
-          title:    'Slack',
-          url:      '/home/slack',
+          icon:     'https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Discord_logo.svg/320px-Discord_logo.svg.png',
+          subtitle: 'Chapter chat',
+          title:    'Discord',
+          url:      'https://discord.gg/FpdWcFFwXC',
         }
       ],
       [
