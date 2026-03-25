@@ -43,7 +43,7 @@ const ROWS = [
         },
         {
           alt:      'Discord Logo',
-          bg:       '#eee',
+          bg:       '#5865F2',
           icon:     'https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Discord_logo.svg/320px-Discord_logo.svg.png',
           subtitle: 'Chapter chat',
           style:    'height: 30px;',
@@ -62,69 +62,11 @@ const ROWS = [
           url:      '/home/zoom',
         },
         {
-          alt:      'Vote',
-          bg:       '#ea290b',
-          icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Ballot_box_icon_color.svg/1006px-Ballot_box_icon_color.svg.png',
-          style:    'height: 91px;',
-          subtitle: 'Chapter Voting Discussion',
-          title:    'Voting Discussion',
-          url:      'https://vote.bostondsa.org/'
-        },
-        {
-          alt:      'Google Drive',
-          bg:       '#eee',
-          icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Drive_icon_%282020%29.svg/269px-Google_Drive_icon_%282020%29.svg.png',
-          subtitle: 'Google Drive',
-          title:    'Google Drive',
-          url:      'https://drive.google.com/drive/u/0/folders/1YImSpo3uEkuY0SWbuwi0trsLsyC1BQNA'
-        }
-      ]
-    ]
-  },
-  {
-    header: 'How To Do Things',
-    cards: [
-      [
-        {
-          alt:      'Request an endorsement',
+          alt:      'Admin Requests Form',
           bg:       '#eeeeee',
           icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
-          subtitle: 'Request an endorsement',
-          title:    'Endorsements',
-          url:      'https://airtable.com/shrGf4B4DaW0WIwoO',
-        },
-        {
-          alt:      'Request funding',
-          bg:       '#eeeeee',
-          icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
-          subtitle: 'Request funding',
-          title:    'Funding',
-          url:      'https://airtable.com/shrGf4B4DaW0WIwoO',
-        },
-        {
-          alt:      'Request a chapter-wide email',
-          bg:       '#eeeeee',
-          icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
-          subtitle: 'Request a chapter-wide email',
-          title:    'Bulk email',
-          url:      'https://airtable.com/shrGf4B4DaW0WIwoO',
-        }
-      ],
-      [
-        {
-          alt:      'Request a textbank',
-          bg:       '#eeeeee',
-          icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
-          subtitle: 'Request a textbank',
-          title:    'Textbank',
-          url:      'https://airtable.com/shrGf4B4DaW0WIwoO',
-        },
-        {
-          alt:      'Comms Requests',
-          bg:       '#eeeeee',
-          icon:     'https://upload.wikimedia.org/wikipedia/commons/a/a1/Google_docs.png',
-          subtitle: 'Comms Requests',
-          title:    'Comms Requests',
+          subtitle: 'Reimbursements, outreach, endorsements, tech support, and more',
+          title:    'Admin Requests',
           url:      'https://airtable.com/shrGf4B4DaW0WIwoO',
         }
       ]
@@ -136,7 +78,7 @@ const ROWS = [
       [
         {
           alt:      'New Member Handbook',
-          bg:       '#eeeeee',
+          bg:       '#b71c1c',
           icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Book_icon_%28closed%29_-_Red_and_gold.svg/137px-Book_icon_%28closed%29_-_Red_and_gold.svg.png',
           subtitle: 'New Member Handbook',
           title:    'New Member Handbook',
@@ -144,20 +86,12 @@ const ROWS = [
         },
         {
           alt:      'Chapter Orientations',
-          bg:       '#eeeeee',
+          bg:       '#1565c0',
           icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Compass_icon_matte.svg/240px-Compass_icon_matte.svg.png',
           subtitle: 'Chapter Orientations',
           title:    'Orientation',
           url:      'https://actionnetwork.org/campaigns/boston-dsa-member-orientations',
         },
-        {
-          alt:      'Rose Buddies',
-          bg:       '#eeeeee',
-          icon:     'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Red_rose_02.svg/1920px-Red_rose_02.svg.png',
-          subtitle: 'Rose Buddies',
-          title:    'Rose Buddies',
-          url:      'https://bdsa.us/RoseBuddy',
-        }
       ]
     ]
   },
@@ -199,15 +133,6 @@ const ROWS = [
           title:    'Twitter',
           url:      'https://twitter.com/Boston_DSA',
         },
-        {
-          alt:      'Blog Logo',
-          bg:       '#f8b195',
-          icon:     'https://i2.wp.com/bostonpewg.org/wp-content/uploads/2018/03/cropped-pewglogo1.png',
-          style:    'height: 91px;',
-          subtitle: 'Political Education Blog',
-          title:    'Blog',
-          url:      'https://bostonpewg.org/',
-        }
       ]
     ]
   },
